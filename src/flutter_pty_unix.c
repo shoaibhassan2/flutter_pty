@@ -180,7 +180,7 @@ FFI_PLUGIN_EXPORT PtyHandle *pty_create(PtyOptions *options)
             chdir(options->working_directory);
         }
 
-        int ok = execvp(options->executable, options->arguments);
+        int ok = execv(options->executable, options->arguments);
 
         if (ok < 0)
         {
