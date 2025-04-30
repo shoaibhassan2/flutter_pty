@@ -14,7 +14,7 @@ pid_t pty_forkpty(
     const struct termios *termp,
     const struct winsize *winp)
 {
-    int ptm = open("/dev/ptmx", O_RDWR | O_NOCTTY);
+    int ptm = open("/dev/ptmx", O_RDWR);
 
     if (ptm < 0)
     {
@@ -35,7 +35,7 @@ pid_t pty_forkpty(
         return -1;
     }
 
-    int pts = open(devname, O_RDWR | O_NOCTTY);
+    int pts = open(devname, O_RDWR);
     if (pts < 0)
     {
         return -1;
@@ -60,6 +60,7 @@ pid_t pty_forkpty(
 
     if (pid == 0)
     {
+        close(ptm);
         setsid();
         if (ioctl(pts, TIOCSCTTY, (char *)NULL) == -1)
             exit(-1);
